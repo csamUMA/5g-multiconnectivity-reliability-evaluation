@@ -53,8 +53,14 @@ def main():
 
     args = parser.parse_args()
 
+    # If no mbps provided → use all
+    if args.mbps is None:
+        mbps = mbps_list
+    else:
+        mbps = [args.mbps]
+
     if args.strategy == "LinkAggregation":
-        if args.mbps not in mbps_list:
+        if mbps not in mbps_list:
             raise ValueError(f"Mbps '{args.mbps}' not valid for experiment {args.experiment}")
         mbps = args.mbps/2.0
         mbps_list = [args.mbps/2.0]
@@ -74,11 +80,7 @@ def main():
             mbps_filter=mbps_list
         )
     else:
-        mbps = args.mbps
-        if args.mbps not in mbps_list:
-            raise ValueError(f"Mbps '{args.mbps}' not valid for experiment {args.experiment}")
-        mbps_list = [args.mbps]
-
+        
         df_full, df_radio, scenarios, mbps_list = load_experiment_data(
             experiment=args.experiment,
             scenario_filter=args.scenario,

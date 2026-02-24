@@ -84,15 +84,14 @@ def load_experiment_data(
                 else:
                     file_mbps = str(file_value)
 
-                plt.tight_layout()
                 BASE_DIR = Path(__file__).resolve().parent.parent
                 DATA_DIR = BASE_DIR / "data" 
                 DATA_DIR.mkdir(parents=True, exist_ok=True)
-                out_name = DATA_DIR / f"df_{csv_model}_{scenario}_{file_mbps}mbps.csv"
-                df_raw.to_csv(out_name, index=False)
+                file_name = DATA_DIR / f"df_{csv_model}_{scenario}_{file_mbps}mbps.csv"
                             
                 try:
-                    df_raw = pd.read_csv(file_name, low_memory=False)
+                    df_raw = pd.read_csv(file_name)
+                    #df_raw.to_csv(out_name, index=False)
                 except FileNotFoundError:
                     print(f"[WARNING] File not found: {file_name}")
                     continue
